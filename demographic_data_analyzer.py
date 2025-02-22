@@ -31,9 +31,8 @@ def calculate_demographic_data(print_data=True):
     higher_education = higher_education_elem[higher_education_elem["salary"] == ">50K"]["salary"].count() / higher_education_elem["salary"].count() * 100
     print(higher_education)
     print("lower_education")
-    lower = df[~((df["education"]=="Bachelors") | (df["education"]=="Masters") | (df["education"]=="Doctorate"))][["education", "salary"]]
-    
-    lower_education = None
+    lower_education_elem = df[~((df["education"]=="Bachelors") | (df["education"]=="Masters") | (df["education"]=="Doctorate"))][["education", "salary"]]
+    lower_education = lower_education_elem[lower_education_elem["salary"] == ">50K"]["salary"].count() / lower_education_elem["salary"].count() * 100
     print(lower_education)
 
     # percentage with salary >50K
