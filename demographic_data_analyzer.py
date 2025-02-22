@@ -4,69 +4,41 @@ import pandas as pd
 def calculate_demographic_data(print_data=True):
     # Read data from file
     df = pd.read_csv("adult.data.csv")
-    print("calculate demographic data print it all haha")
-    print(df)
-    print("print race count")
     
     # How many of each race are represented in this dataset? This should be a Pandas series with race names as the index labels.
     race_count = df["race"].value_counts()
-    print(race_count)
-    print("average_age_men")
 
     # What is the average age of men?
-    average_age_men = df[df["sex"]=="Male"]["age"].mean()
-    print(average_age_men)
+    average_age_men = df[df["sex"]=="Male"]["age"].mean().round(decimals=1)
 
-    print("percentage_bachelors")
     # What is the percentage of people who have a Bachelor's degree?
-    total_elem = df["education"].count()
-    percentage_bachelors = df[df["education"]=="Bachelors"]["education"].count() / total_elem * 100
-    print(percentage_bachelors)
+    percentage_bachelors = (df[df["education"]=="Bachelors"]["education"].count() / df["education"].count() * 100).round(decimals=1)
 
     # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
     # What percentage of people without advanced education make more than 50K?
-    print("higher_education")
+
     # with and without `Bachelors`, `Masters`, or `Doctorate`
     higher_education = df[(df["education"]=="Bachelors") | (df["education"]=="Masters") | (df["education"]=="Doctorate")][["education", "salary"]]
-    print(higher_education)
-    print("lower_education")
     lower_education = df[~((df["education"]=="Bachelors") | (df["education"]=="Masters") | (df["education"]=="Doctorate"))][["education", "salary"]]
-    print(lower_education)
 
     # percentage with salary >50K
-    print("higher_education_rich")
-    higher_education_rich = higher_education[higher_education["salary"] == ">50K"]["salary"].count() / higher_education["salary"].count() * 100
-    lower_education_rich = lower_education[lower_education["salary"] == ">50K"]["salary"].count() / lower_education["salary"].count() * 100
-    print(higher_education_rich)
-    print("lower_education_rich")
-    print(lower_education_rich)
+    higher_education_rich = (higher_education[higher_education["salary"] == ">50K"]["salary"].count() / higher_education["salary"].count() * 100).round(decimals=1)
+    lower_education_rich = (lower_education[lower_education["salary"] == ">50K"]["salary"].count() / lower_education["salary"].count() * 100).round(decimals=1)
 
     # What is the minimum number of hours a person works per week (hours-per-week feature)?
-    print("min_work_hours")
     min_work_hours = df["hours-per-week"].min()
-    print(min_work_hours)
 
     # What percentage of the people who work the minimum number of hours per week have a salary of >50K?
-    print("num_min_workers")
-    min_workers_elem = df[df["hours-per-week"]==min_work_hours]["salary"]
-    num_min_workers = min_workers_elem[min_workers_elem==">50K"].count() / min_workers_elem.count() * 100
-    print(num_min_workers)
-    print("rich percentage")
+    num_min_workers = df[df["hours-per-week"]==min_work_hours]["salary"]
     
-    rich_percentage = df[df["salary"] == ">50K"]["salary"].count() / df["salary"].count() * 100
-    print(rich_percentage)
+    rich_percentage = (num_min_workers[num_min_workers==">50K"].count() / num_min_workers.count() * 100).round(decimals=1)
+
     # What country has the highest percentage of people that earn >50K?
-    print("highest_earning_country")
     highest_earning_country = (df[df['salary'] == ">50K"]["native-country"].value_counts() / df["native-country"].value_counts()).idxmax()
-    print(highest_earning_country)
-    print("highest_earning_country_percentage")
-    highest_earning_country_percentage = (df[df['salary'] == ">50K"]["native-country"].value_counts() / df["native-country"].value_counts()).max() * 100
-    print(highest_earning_country_percentage)
+    highest_earning_country_percentage = ((df[df['salary'] == ">50K"]["native-country"].value_counts() / df["native-country"].value_counts()).max() * 100).round(decimals=1)
 
     # Identify the most popular occupation for those who earn >50K in India.
-    print("topInOccupation")
-    top_IN_occupation = df[(df["native-country"] == "India") & (df["salary"] == ">50K")]["workclass"].value_counts().idxmax()
-    print(top_IN_occupation)
+    top_IN_occupation = df[(df["native-country"] == "India") & (df["salary"] == ">50K")]["occupation"].value_counts().idxmax()
 
     # DO NOT MODIFY BELOW THIS LINE
 
