@@ -14,17 +14,27 @@ def calculate_demographic_data(print_data=True):
     print("average_age_men")
 
     # What is the average age of men?
-    average_age_men = df
+    average_age_men = df[df["sex"]=="Male"]["age"].mean()
+    print(average_age_men)
 
+    print("percentage_bachelors")
     # What is the percentage of people who have a Bachelor's degree?
-    percentage_bachelors = None
+    total_elem = df["education"].count()
+    percentage_bachelors = df[df["education"]=="Bachelors"]["education"].count() / total_elem * 100
+    print(percentage_bachelors)
 
     # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
     # What percentage of people without advanced education make more than 50K?
-
+    print("higher_education")
     # with and without `Bachelors`, `Masters`, or `Doctorate`
-    higher_education = None
+    higher_education_elem = df[(df["education"]=="Bachelors") | (df["education"]=="Masters") | (df["education"]=="Doctorate")][["education", "salary"]]
+    higher_education = higher_education_elem[higher_education_elem["salary"] == ">50K"]["salary"].count() / higher_education_elem["salary"].count() * 100
+    print(higher_education)
+    print("lower_education")
+    lower = df[~((df["education"]=="Bachelors") | (df["education"]=="Masters") | (df["education"]=="Doctorate"))][["education", "salary"]]
+    
     lower_education = None
+    print(lower_education)
 
     # percentage with salary >50K
     higher_education_rich = None
