@@ -27,18 +27,16 @@ def calculate_demographic_data(print_data=True):
     # What percentage of people without advanced education make more than 50K?
     print("higher_education")
     # with and without `Bachelors`, `Masters`, or `Doctorate`
-    higher_education_elem = df[(df["education"]=="Bachelors") | (df["education"]=="Masters") | (df["education"]=="Doctorate")][["education", "salary"]]
-    higher_education = higher_education_elem[higher_education_elem["salary"] == ">50K"]["salary"].count() / higher_education_elem["salary"].count() * 100
+    higher_education = df[(df["education"]=="Bachelors") | (df["education"]=="Masters") | (df["education"]=="Doctorate")][["education", "salary"]]
     print(higher_education)
     print("lower_education")
-    lower_education_elem = df[~((df["education"]=="Bachelors") | (df["education"]=="Masters") | (df["education"]=="Doctorate"))][["education", "salary"]]
-    lower_education = lower_education_elem[lower_education_elem["salary"] == ">50K"]["salary"].count() / lower_education_elem["salary"].count() * 100
+    lower_education = df[~((df["education"]=="Bachelors") | (df["education"]=="Masters") | (df["education"]=="Doctorate"))][["education", "salary"]]
     print(lower_education)
 
     # percentage with salary >50K
     print("higher_education_rich")
-    higher_education_rich = df[df["salary"] == ">50K"]["salary"].count() / df["salary"].count() * 100
-    lower_education_rich = df[df["salary"] != ">50K"]["salary"].count() / df["salary"].count() * 100
+    higher_education_rich = higher_education[higher_education["salary"] == ">50K"]["salary"].count() / higher_education["salary"].count() * 100
+    lower_education_rich = lower_education[lower_education["salary"] == ">50K"]["salary"].count() / lower_education["salary"].count() * 100
     print(higher_education_rich)
     print("lower_education_rich")
     print(lower_education_rich)
@@ -55,14 +53,20 @@ def calculate_demographic_data(print_data=True):
     print(num_min_workers)
     print("rich percentage")
     
-    rich_percentage = None
-
+    rich_percentage = df[df["salary"] == ">50K"]["salary"].count() / df["salary"].count() * 100
+    print(rich_percentage)
     # What country has the highest percentage of people that earn >50K?
-    highest_earning_country = None
-    highest_earning_country_percentage = None
+    print("highest_earning_country")
+    highest_earning_country = (df[df['salary'] == ">50K"]["native-country"].value_counts() / df["native-country"].value_counts()).idxmax()
+    print(highest_earning_country)
+    print("highest_earning_country_percentage")
+    highest_earning_country_percentage = (df[df['salary'] == ">50K"]["native-country"].value_counts() / df["native-country"].value_counts()).max() * 100
+    print(highest_earning_country_percentage)
 
     # Identify the most popular occupation for those who earn >50K in India.
-    top_IN_occupation = None
+    print("topInOccupation")
+    top_IN_occupation = df[(df["native-country"] == "India") & (df["salary"] == ">50K")]["workclass"].value_counts().idxmax()
+    print(top_IN_occupation)
 
     # DO NOT MODIFY BELOW THIS LINE
 
